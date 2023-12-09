@@ -1,7 +1,7 @@
 //SPDX-License: UNLICENSED
 pragma solidity ^0.8.13;
 
-interface ITDrexPair {
+interface ISaSiPair {
     function name() external pure returns (string memory);
 
     function symbol() external pure returns (string memory);

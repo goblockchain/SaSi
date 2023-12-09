@@ -1,12 +1,12 @@
 // SPDX-License: UNLICENSED
 pragma solidity ^0.8.13;
 
-// ITDrexFactory
-import "../interfaces/ITDrexFactory.sol";
+// ISaSiFactory
+import "../interfaces/ISaSiFactory.sol";
 // TransferHelper
 import "../libraries/TransferHelper.sol";
-// TDrexLibrary
-import "../libraries/TDrexLibrary.sol";
+// SaSiLibrary
+import "../libraries/SaSiLibrary.sol";
 // SafeMath
 import "../libraries/SafeMath.sol";
 // IERC20
@@ -18,13 +18,13 @@ import "../interfaces/INative.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155.sol";
 
 /**
- * @title TDrexRouter
- * @author TDrex team
+ * @title SaSiRouter
+ * @author SaSi team
  * @notice Since this contract will be inside a permissioned EVM-compatible blockchain, we, therefore, decided to make some assumptions. NOTE that removing these assumptions make this contract to be vulnerable to be deployed in any EVM-compatible mainnet. The assumptions are below:
  * 1. The `tokenB` in addLiquidity/removeLiquidity will always be an ERC1155-like token, enforced by the back-end of the application.
  */
 
-contract TDrexRouter {
+contract SaSiRouter {
     using SafeMath for uint;
 
     address public immutable factory;
@@ -100,15 +100,15 @@ contract TDrexRouter {
         uint amountBMin // seems the min amount that the caller wants to be surely added as liquidity
     ) internal virtual returns (uint amountA, uint amountB) {
         // create pair pool if it doesn't exist yet
-        (address token0, address token1) = TDrexLibrary.sortTokens(
+        (address token0, address token1) = SaSiLibrary.sortTokens(
             tokenA,
             tokenB
         );
-        if (ITDrexFactory(factory).getPair(token0, token1, id) == address(0)) {
+        if (ISaSiFactory(factory).getPair(token0, token1, id) == address(0)) {
             revert Router_PairUnexists();
         }
 
-        (uint reserveA, uint reserveB) = TDrexLibrary.getReserves(
+        (uint reserveA, uint reserveB) = SaSiLibrary.getReserves(
             factory,
             token0,
             token1,
@@ -121,7 +121,7 @@ contract TDrexRouter {
             (amountA, amountB) = (amountADesired, amountBDesired);
         } else {
             // this case happens if the pool already exists
-            uint amountBOptimal = TDrexLibrary.quote(
+            uint amountBOptimal = SaSiLibrary.quote(
                 amountADesired,
                 reserveA,
                 reserveB
@@ -131,7 +131,7 @@ contract TDrexRouter {
                     revert Router_Insufficient_B_Amount(amountBMin);
                 (amountA, amountB) = (amountADesired, amountBOptimal);
             } else {
-                uint amountAOptimal = TDrexLibrary.quote(
+                uint amountAOptimal = SaSiLibrary.quote(
                     amountBDesired,
                     reserveB,
                     reserveA
@@ -167,13 +167,13 @@ contract TDrexRouter {
             amountAMin,
             amountBMin
         );
-        address pair = TDrexLibrary.pairFor(factory, tokenA, tokenB, id);
+        address pair = SaSiLibrary.pairFor(factory, tokenA, tokenB, id);
         TransferHelper.safeTransferFrom(tokenA, msg.sender, pair, amountA);
 
         IERC1155(tokenB).safeTransferFrom(msg.sender, pair, id, amountB, "0x");
         // TransferHelper.safeTransferFrom(tokenB, msg.sender, pair, amountB);
 
-        liquidity = ITDrexPair(pair).mint(to);
+        liquidity = ISaSiPair(pair).mint(to);
     }
 
     function addLiquidityNative(
@@ -202,11 +202,11 @@ contract TDrexRouter {
             amountNativeMin
         );
 
-        address pair = TDrexLibrary.pairFor(factory, token, WNative, id);
+        address pair = SaSiLibrary.pairFor(factory, token, WNative, id);
         TransferHelper.safeTransferFrom(token, msg.sender, pair, amountToken);
         INative(WNative).deposit{value: amountNative}();
         assert(INative(WNative).transfer(pair, amountNative));
-        liquidity = ITDrexPair(pair).mint(to);
+        liquidity = ISaSiPair(pair).mint(to);
         // refund dust native, if any
         // @audit-info this is another measure to avoid receiving unexpected Native
         if (msg.value > amountNative)
@@ -232,12 +232,12 @@ contract TDrexRouter {
     ) public virtual returns (uint amountA, uint amountB) {
         ensure(deadline);
         _isAllowed(msg.sender);
-        address pair = TDrexLibrary.pairFor(factory, tokenA, tokenB, id);
+        address pair = SaSiLibrary.pairFor(factory, tokenA, tokenB, id);
         // LP tokens are sent to the pool, then burned in next line;remember the pair pool is also a token.
-        ITDrexPair(pair).transferFrom(msg.sender, pair, liquidity);
+        ISaSiPair(pair).transferFrom(msg.sender, pair, liquidity);
         // burn LP tokens in pool - pool is the one that send the tokens to the caller.
-        (uint amount0, uint amount1) = ITDrexPair(pair).burn(to);
-        (address token0, ) = TDrexLibrary.sortTokens(tokenA, tokenB);
+        (uint amount0, uint amount1) = ISaSiPair(pair).burn(to);
+        (address token0, ) = SaSiLibrary.sortTokens(tokenA, tokenB);
         // the protocol uses the sort of tokens throughout since each token's address represents a number.
         (amountA, amountB) = tokenA == token0
             ? (amount0, amount1)
@@ -289,9 +289,9 @@ contract TDrexRouter {
         bytes32 r,
         bytes32 s
     ) external virtual returns (uint amountA, uint amountB) {
-        address pair = TDrexLibrary.pairFor(factory, tokenA, tokenB, id);
+        address pair = SaSiLibrary.pairFor(factory, tokenA, tokenB, id);
         uint value = approveMax ? type(uint).max : liquidity;
-        ITDrexPair(pair).permit(
+        ISaSiPair(pair).permit(
             msg.sender,
             address(this),
             value,
@@ -325,9 +325,9 @@ contract TDrexRouter {
         bytes32 r,
         bytes32 s
     ) external virtual returns (uint amountToken, uint amountNative) {
-        address pair = TDrexLibrary.pairFor(factory, token, WNative, id);
+        address pair = SaSiLibrary.pairFor(factory, token, WNative, id);
         uint value = approveMax ? type(uint).max : liquidity;
-        ITDrexPair(pair).permit(
+        ISaSiPair(pair).permit(
             msg.sender,
             address(this),
             value,
@@ -397,9 +397,9 @@ contract TDrexRouter {
         bytes32 r,
         bytes32 s
     ) external virtual returns (uint amountNative) {
-        address pair = TDrexLibrary.pairFor(factory, token, WNative, id);
+        address pair = SaSiLibrary.pairFor(factory, token, WNative, id);
         uint value = approveMax ? type(uint).max : liquidity;
-        ITDrexPair(pair).permit(
+        ISaSiPair(pair).permit(
             msg.sender,
             address(this),
             value,
@@ -436,12 +436,12 @@ contract TDrexRouter {
         address to
     ) internal virtual {
         (address input, address output) = (path[0], path[1]);
-        (address token0, ) = TDrexLibrary.sortTokens(input, output);
+        (address token0, ) = SaSiLibrary.sortTokens(input, output);
         uint amountOut = amounts[1];
         (uint amount0Out, uint amount1Out) = input == token0
             ? (uint(0), amountOut)
             : (amountOut, uint(0));
-        ITDrexPair(TDrexLibrary.pairFor(factory, input, output, id)).swap(
+        ISaSiPair(SaSiLibrary.pairFor(factory, input, output, id)).swap(
             amount0Out,
             amount1Out,
             to
@@ -457,14 +457,14 @@ contract TDrexRouter {
         uint deadline
     ) external returns (uint[] memory amounts) {
         ensure(deadline);
-        amounts = TDrexLibrary.getAmountsOut(factory, amountIn, path, id);
+        amounts = SaSiLibrary.getAmountsOut(factory, amountIn, path, id);
         // should we have the `amountOutMin`? I don't think so.
         if (amounts[amounts.length - 1] < amountOutMin)
             revert Router_Insufficient_OUTPUT_Amount(amountOutMin);
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amountIn
         );
         _swap(amounts, path, id, to);
@@ -479,14 +479,14 @@ contract TDrexRouter {
         uint deadline
     ) external returns (uint[] memory amounts) {
         ensure(deadline);
-        amounts = TDrexLibrary.getAmountsOut(factory, amountIn, path, id);
+        amounts = SaSiLibrary.getAmountsOut(factory, amountIn, path, id);
         // should we have the `amountOutMin`? I don't think so.
         if (amounts[amounts.length - 1] < amountOutMin)
             revert Router_Insufficient_OUTPUT_Amount(amountOutMin);
         TransferHelper.safeTransferERC1155From(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             id,
             amountIn
         );
@@ -502,13 +502,13 @@ contract TDrexRouter {
         uint deadline
     ) external virtual returns (uint[] memory amounts) {
         ensure(deadline);
-        amounts = TDrexLibrary.getAmountsOut(factory, amountIn, path, id);
+        amounts = SaSiLibrary.getAmountsOut(factory, amountIn, path, id);
         if (amounts[amounts.length - 1] < amountOutMin)
             revert Router_Insufficient_OUTPUT_Amount(amountOutMin);
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amounts[0]
         );
         _swap(amounts, path, id, to);
@@ -523,13 +523,13 @@ contract TDrexRouter {
         uint deadline
     ) external virtual returns (uint[] memory amounts) {
         ensure(deadline);
-        amounts = TDrexLibrary.getAmountsIn(factory, amountOut, path, id);
+        amounts = SaSiLibrary.getAmountsIn(factory, amountOut, path, id);
         if (amounts[0] > amountInMax)
             revert Router_Excessive_Input_Amount(amountInMax);
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amounts[0]
         );
         _swap(amounts, path, id, to);
@@ -544,13 +544,13 @@ contract TDrexRouter {
     ) external payable virtual returns (uint[] memory amounts) {
         ensure(deadline);
         if (path[0] != WNative) revert Router_Invalid_Path(path[0]);
-        amounts = TDrexLibrary.getAmountsOut(factory, msg.value, path, id);
+        amounts = SaSiLibrary.getAmountsOut(factory, msg.value, path, id);
         if (amounts[amounts.length - 1] < amountOutMin)
             revert Router_Insufficient_OUTPUT_Amount(amountOutMin);
         INative(WNative).deposit{value: amounts[0]}();
         assert(
             INative(WNative).transfer(
-                TDrexLibrary.pairFor(factory, path[0], path[1], id),
+                SaSiLibrary.pairFor(factory, path[0], path[1], id),
                 amounts[0]
             )
         );
@@ -568,13 +568,13 @@ contract TDrexRouter {
         ensure(deadline);
         if (path[path.length - 1] != WNative)
             revert Router_Invalid_Path(path[path.length - 1]);
-        amounts = TDrexLibrary.getAmountsIn(factory, amountOut, path, id);
+        amounts = SaSiLibrary.getAmountsIn(factory, amountOut, path, id);
         if (amounts[0] > amountInMax)
             revert Router_Excessive_Input_Amount(amountInMax);
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amounts[0]
         );
         _swap(amounts, path, id, address(this));
@@ -593,13 +593,13 @@ contract TDrexRouter {
         ensure(deadline);
         if (path[path.length - 1] != WNative)
             revert Router_Invalid_Path(path[path.length - 1]);
-        amounts = TDrexLibrary.getAmountsOut(factory, amountIn, path, id);
+        amounts = SaSiLibrary.getAmountsOut(factory, amountIn, path, id);
         if (amounts[amounts.length - 1] < amountOutMin)
             revert Router_Insufficient_OUTPUT_Amount(amountOutMin);
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amounts[0]
         );
         _swap(amounts, path, id, address(this));
@@ -616,13 +616,13 @@ contract TDrexRouter {
     ) external payable virtual returns (uint[] memory amounts) {
         ensure(deadline);
         if (path[0] != WNative) revert Router_Invalid_Path(path[0]);
-        amounts = TDrexLibrary.getAmountsIn(factory, amountOut, path, id);
+        amounts = SaSiLibrary.getAmountsIn(factory, amountOut, path, id);
         if (amounts[0] > msg.value)
             revert Router_Excessive_Input_Amount(amounts[0]);
         INative(WNative).deposit{value: amounts[0]}();
         assert(
             INative(WNative).transfer(
-                TDrexLibrary.pairFor(factory, path[0], path[1], id),
+                SaSiLibrary.pairFor(factory, path[0], path[1], id),
                 amounts[0]
             )
         );
@@ -648,9 +648,9 @@ contract TDrexRouter {
         uint pathLength = path.length;
         for (uint i; i < pathLength - 1; ) {
             (address input, address output) = (path[i], path[i + 1]);
-            (address token0, ) = TDrexLibrary.sortTokens(input, output);
-            ITDrexPair pair = ITDrexPair(
-                TDrexLibrary.pairFor(factory, input, output, id)
+            (address token0, ) = SaSiLibrary.sortTokens(input, output);
+            ISaSiPair pair = ISaSiPair(
+                SaSiLibrary.pairFor(factory, input, output, id)
             );
             uint amountInput;
             uint amountOutput;
@@ -663,7 +663,7 @@ contract TDrexRouter {
                 amountInput = IERC20(input).balanceOf(address(pair)).sub(
                     reserveInput
                 );
-                amountOutput = TDrexLibrary.getAmountOut(
+                amountOutput = SaSiLibrary.getAmountOut(
                     amountInput,
                     reserveInput,
                     reserveOutput
@@ -673,7 +673,7 @@ contract TDrexRouter {
                 ? (uint(0), amountOutput)
                 : (amountOutput, uint(0));
             address to = i < path.length - 2
-                ? TDrexLibrary.pairFor(factory, output, path[i + 2], id)
+                ? SaSiLibrary.pairFor(factory, output, path[i + 2], id)
                 : _to;
             pair.swap(amount0Out, amount1Out, to);
             unchecked {
@@ -694,7 +694,7 @@ contract TDrexRouter {
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amountIn
         );
 
@@ -720,7 +720,7 @@ contract TDrexRouter {
         INative(WNative).deposit{value: amountIn}();
         assert(
             INative(WNative).transfer(
-                TDrexLibrary.pairFor(factory, path[0], path[1], id),
+                SaSiLibrary.pairFor(factory, path[0], path[1], id),
                 amountIn
             )
         );
@@ -746,7 +746,7 @@ contract TDrexRouter {
         TransferHelper.safeTransferFrom(
             path[0],
             msg.sender,
-            TDrexLibrary.pairFor(factory, path[0], path[1], id),
+            SaSiLibrary.pairFor(factory, path[0], path[1], id),
             amountIn
         );
         _swapSupportingFeeOnTransferTokens(path, id, address(this));
@@ -765,7 +765,7 @@ contract TDrexRouter {
         uint reserveA,
         uint reserveB
     ) public pure virtual returns (uint amountB) {
-        return TDrexLibrary.quote(amountA, reserveA, reserveB);
+        return SaSiLibrary.quote(amountA, reserveA, reserveB);
     }
 
     function getAmountOut(
@@ -773,7 +773,7 @@ contract TDrexRouter {
         uint reserveIn,
         uint reserveOut
     ) public pure virtual returns (uint amountOut) {
-        return TDrexLibrary.getAmountOut(amountIn, reserveIn, reserveOut);
+        return SaSiLibrary.getAmountOut(amountIn, reserveIn, reserveOut);
     }
 
     function getAmountIn(
@@ -781,7 +781,7 @@ contract TDrexRouter {
         uint reserveIn,
         uint reserveOut
     ) public pure virtual returns (uint amountIn) {
-        return TDrexLibrary.getAmountIn(amountIn, reserveIn, reserveOut);
+        return SaSiLibrary.getAmountIn(amountIn, reserveIn, reserveOut);
     }
 
     function getAmountsOut(
@@ -789,7 +789,7 @@ contract TDrexRouter {
         uint id,
         address[] memory path
     ) public view virtual returns (uint[] memory amounts) {
-        return TDrexLibrary.getAmountsOut(factory, amountIn, path, id);
+        return SaSiLibrary.getAmountsOut(factory, amountIn, path, id);
     }
 
     // JUMP opcode is cheaper than CODECOPY opcode as if we had used a modifier.

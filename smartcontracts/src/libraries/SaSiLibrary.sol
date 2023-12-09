@@ -1,15 +1,15 @@
 pragma solidity ^0.8.13;
 
-// TODO: import TDrexPair instead of below
+// TODO: import SaSiPair instead of below
 // import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 // import "";
 import "./SafeMath.sol";
 import "../../lib/openzeppelin-contracts/contracts/interfaces/IERC165.sol";
-import "../interfaces/ITDrexPair.sol";
-import "../interfaces/ITDrexFactory.sol";
+import "../interfaces/ISaSiPair.sol";
+import "../interfaces/ISaSiFactory.sol";
 import "../../lib/forge-std/src/console.sol";
 
-library TDrexLibrary {
+library SaSiLibrary {
     using SafeMath for uint;
 
     /*╔═════════════════════════════╗
@@ -60,7 +60,7 @@ library TDrexLibrary {
         uint id
     ) internal view returns (address pair) {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
-        pair = ITDrexFactory(factory).getPair(token0, token1, id);
+        pair = ISaSiFactory(factory).getPair(token0, token1, id);
         if (pair == address(0)) revert Library_Pair_Unexists(token0, token1);
     }
 
@@ -72,7 +72,7 @@ library TDrexLibrary {
         uint id
     ) internal view returns (uint reserveA, uint reserveB) {
         (address token0, ) = sortTokens(tokenA, tokenB);
-        (uint reserve0, uint reserve1, ) = ITDrexPair(
+        (uint reserve0, uint reserve1, ) = ISaSiPair(
             pairFor(factory, tokenA, tokenB, id)
         ).getReserves();
         (reserveA, reserveB) = tokenA == token0

@@ -1,8 +1,7 @@
 //SPDX-License-Identifier: UNLICENSED
-// TODO: put the right license
 pragma solidity ^0.8.13;
 
-interface ITDrexFactory {
+interface ISaSiFactory {
     function govBr() external view returns (address);
 
     function feeTo() external view returns (address);

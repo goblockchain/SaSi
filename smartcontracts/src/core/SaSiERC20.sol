@@ -1,13 +1,12 @@
 pragma solidity ^0.8.13;
 
-// import "./interfaces/IUniswapV2ERC20.sol";
 import "../libraries/SafeMath.sol";
 
-contract TDrexERC20 {
+contract SaSiERC20 {
     using SafeMath for uint;
 
-    string public constant name = "T-Drex";
-    string public constant symbol = "TDrex";
+    string public constant name = "SaSi";
+    string public constant symbol = "SaSi";
     uint8 public constant decimals = 18;
     uint public totalSupply;
     mapping(address => uint) public balanceOf;

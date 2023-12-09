@@ -2,25 +2,25 @@
 pragma solidity ^0.8.13;
 
 import {Test, console2} from "forge-std/Test.sol";
-import {TDrexFactory} from "../src/core/TDrexFactory.sol";
+import {SaSiFactory} from "../src/core/SaSiFactory.sol";
 import {INative} from "../src/interfaces/INative.sol";
 import {NATIVE} from "../src/core/Native.sol";
 import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import {TDrexRouter} from "../src/periphery/TDrexRouter.sol";
+import {SaSiRouter} from "../src/periphery/SaSiRouter.sol";
 import {mockERC1155Token, mockERC20Token} from "../src/MockToken.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Checker.sol";
-import {TDrexLibrary} from "../src/libraries/TDrexLibrary.sol";
-import {TDrexPair} from "../src/core/TDrexPair.sol";
+import {SaSiLibrary} from "../src/libraries/SaSiLibrary.sol";
+import {SaSiPair} from "../src/core/SaSiPair.sol";
 
 contract CounterTest is Test, IERC1155Receiver {
-    TDrexPair pair;
-    TDrexRouter router;
-    TDrexFactory public factory;
+    SaSiPair pair;
+    SaSiRouter router;
+    SaSiFactory public factory;
     NATIVE public native;
     address randomUser;
     mockERC1155Token token1;
     mockERC20Token token0;
-    uint constant ID = 12345;
+    uint constant ID = 1;
     address govBr;
     address entity;
 
@@ -29,17 +29,17 @@ contract CounterTest is Test, IERC1155Receiver {
         randomUser = makeAddr("randomUser");
         entity = makeAddr("entity");
         vm.startPrank(govBr);
-        factory = new TDrexFactory(govBr, govBr);
+        factory = new SaSiFactory(govBr, govBr);
         token1 = new mockERC1155Token();
         token0 = new mockERC20Token();
         native = new NATIVE();
-        router = new TDrexRouter(address(factory), govBr, address(native));
+        router = new SaSiRouter(address(factory), govBr, address(native));
         router.addEntity(entity);
         vm.stopPrank();
 
         vm.startPrank(randomUser);
-        token1.mint(randomUser, 12345, 1 ether);
-        token1.mint(entity, 12345, 1 ether);
+        token1.mint(randomUser, 1, 1 ether);
+        token1.mint(entity, 1, 1 ether);
         token0.mint(randomUser, 5 ether);
         token0.mint(entity, 2 ether);
         vm.stopPrank();
@@ -56,7 +56,7 @@ contract CounterTest is Test, IERC1155Receiver {
           ║   MOCK PAIR USED IN TESTS   ║
           ╚═════════════════════════════╝*/
         vm.startPrank(govBr);
-        pair = TDrexPair(
+        pair = SaSiPair(
             factory.createPair(
                 address(token0),
                 address(token1),
@@ -74,7 +74,7 @@ contract CounterTest is Test, IERC1155Receiver {
         router.addLiquidity(
             address(token0),
             address(token1),
-            12345,
+            1,
             2 ether,
             1 ether,
             0,
@@ -105,19 +105,19 @@ contract CounterTest is Test, IERC1155Receiver {
         address[] memory path = new address[](2);
         path[0] = address(token1); // erc1155
         path[1] = address(token0); // erc20
-        uint amountIn = token1.balanceOf(govBr, 12345) / 5; //  2 ether
+        uint amountIn = token1.balanceOf(govBr, 1) / 5; //  2 ether
 
         // FRONT-END simulation of swap:
         // 0. Front-end may call the function `getPair` on factory.
         address pairFromFactory = factory.getPair(
             address(token0),
             address(token1),
-            12345
+            1
         );
 
         // 1. Front-end may call the function `getAmountsOut` on router.
         uint[] memory amounts = new uint[](2);
-        amounts = router.getAmountsOut(amountIn, 12345, path);
+        amounts = router.getAmountsOut(amountIn, 1, path);
 
         emit log_named_uint("amounts[0]", amounts[0]);
         emit log_named_uint("amounts[1]", amounts[1]);
@@ -129,7 +129,7 @@ contract CounterTest is Test, IERC1155Receiver {
             amountIn,
             0,
             path,
-            12345,
+            1,
             govBr,
             block.timestamp + 1 days
         );
@@ -151,14 +151,10 @@ contract CounterTest is Test, IERC1155Receiver {
 
         // FRONT-END simulation of swap:
         // 0. Front-end may call the function `getPair` on factory.
-        pairFromFactory = factory.getPair(
-            address(token0),
-            address(token1),
-            12345
-        );
+        pairFromFactory = factory.getPair(address(token0), address(token1), 1);
 
         // 1. Front-end may call the function `getAmountsOut` on router.
-        amounts = router.getAmountsOut(amountIn, 12345, path);
+        amounts = router.getAmountsOut(amountIn, 1, path);
 
         emit log_named_uint("amounts[0]", amounts[0]);
         emit log_named_uint("amounts[1]", amounts[1]);
@@ -168,16 +164,16 @@ contract CounterTest is Test, IERC1155Receiver {
             amountIn,
             0,
             path,
-            12345,
+            1,
             randomUser,
             block.timestamp + 1 days
         );
 
-        address pairFromLib = TDrexLibrary.pairFor(
+        address pairFromLib = SaSiLibrary.pairFor(
             address(factory),
             address(token0),
             address(token1),
-            12345
+            1
         );
         assert(address(pairFromLib) == address(pair));
     }
@@ -189,7 +185,7 @@ contract CounterTest is Test, IERC1155Receiver {
 
         // `pairFor` and `getPair` should return the same address.
         assertEq(
-            TDrexLibrary.pairFor(
+            SaSiLibrary.pairFor(
                 address(factory),
                 address(token1),
                 address(token0),
@@ -199,12 +195,14 @@ contract CounterTest is Test, IERC1155Receiver {
         );
 
         // sort works despite order given.
-        (address tokenA, address tokenB) = TDrexLibrary.sortTokens(
+        (address tokenA, address tokenB) = SaSiLibrary.sortTokens(
             address(token1),
             address(token0)
         );
-        (address reverseTokenA, address reverseTokenB) = TDrexLibrary
-            .sortTokens(address(token0), address(token1));
+        (address reverseTokenA, address reverseTokenB) = SaSiLibrary.sortTokens(
+            address(token0),
+            address(token1)
+        );
         assert(tokenA == reverseTokenA);
         assert(tokenB == reverseTokenB);
 
@@ -214,7 +212,7 @@ contract CounterTest is Test, IERC1155Receiver {
          * amountB = 1 ether * 10 ether / 10 ether = 1 ether.
          */
         assertEq(
-            TDrexLibrary.quote(
+            SaSiLibrary.quote(
                 1 ether,
                 token0.totalSupply(),
                 token1.balanceOf(address(this), ID)
@@ -229,7 +227,7 @@ contract CounterTest is Test, IERC1155Receiver {
          * amountOut = amountIn * 0,97% * reserveOut / (reserveIn + amountIn * 0,97%)
          * 0.3% fee for protocol.
          */
-        uint amountOut = TDrexLibrary.getAmountOut(
+        uint amountOut = SaSiLibrary.getAmountOut(
             1 ether, // amountIn
             token0.totalSupply(), // reserveIn, 10 ether
             token1.balanceOf(address(this), ID) // reserveOut, 10 ether
@@ -239,7 +237,7 @@ contract CounterTest is Test, IERC1155Receiver {
         /**
          * getAmountIn
          */
-        uint amountIn = TDrexLibrary.getAmountIn(
+        uint amountIn = SaSiLibrary.getAmountIn(
             906610893880149131, // amountOut- erc1155
             token1.balanceOf(address(this), ID), // reserveIn
             token0.totalSupply() // reserveOut
@@ -247,14 +245,14 @@ contract CounterTest is Test, IERC1155Receiver {
         assertEq(amountIn, 819712444874338082);
 
         // getReserves returns reserves
-        (uint reserveA, uint reserveB) = TDrexLibrary.getReserves(
+        (uint reserveA, uint reserveB) = SaSiLibrary.getReserves(
             address(factory),
             address(token1),
             address(token0),
             ID
         );
 
-        (uint reverseReserveA, uint reverseReserveB) = TDrexLibrary.getReserves(
+        (uint reverseReserveA, uint reverseReserveB) = SaSiLibrary.getReserves(
             address(factory),
             address(token1),
             address(token0),
@@ -304,7 +302,7 @@ contract CounterTest is Test, IERC1155Receiver {
             block.timestamp + 1 days
         );
 
-        // address(this) receives: 9999999999999999000 ERC1155 tokens of ID 12345 && 9999999999999999000 of tokens ERC20.
+        // address(this) receives: 9999999999999999000 ERC1155 tokens of ID 1 && 9999999999999999000 of tokens ERC20.
         // pair still has 1000 of each token.
         assertEq(token0.balanceOf(address(pair)), 1000);
         assertEq(token1.balanceOf(address(pair), ID), 1000);
@@ -353,8 +351,8 @@ contract CounterTest is Test, IERC1155Receiver {
         assertEq(token0.balanceOf(randomUser), 2000000000000000979);
     }
 
-    /// @dev it reverts on TDrexPair-L:208 in the `sub` function.
-    function test_RouterTDrex() public {
+    /// @dev it reverts on SaSiPair-L:208 in the `sub` function.
+    function test_RouterSaSi() public {
         // gov makes itself an entity.
         router.addEntity(address(this));
         // it approves the router to transfer its tokens.

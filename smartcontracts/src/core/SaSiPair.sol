@@ -1,13 +1,11 @@
 pragma solidity ^0.8.13;
 
-// import "./interfaces/IUniswapV2Pair.sol";
-// TODO: Substitute by an ERC1155
-import "./TDrexERC20.sol";
+import "./SaSiERC20.sol";
 
 import "../libraries/Math.sol";
 import "../libraries/UQ112x122.sol";
 import "../interfaces/IERC20.sol";
-import "../interfaces/ITDrexFactory.sol";
+import "../interfaces/ISaSiFactory.sol";
 import "../interfaces/IERC1155Burnable.sol";
 import "../../lib/forge-std/src/console.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
@@ -15,13 +13,13 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 // import "./interfaces/IUniswapV2Callee.sol";
 
 /**
- * @title TDrexPair
- * @author TDrex team
+ * @title SaSiPair
+ * @author SaSi team
  * @notice Since this contract will be inside a permissioned EVM-compatible blockchain, we, therefore, decided to make some assumptions. NOTE that removing these assumptions make this contract to be vulnerable to be deployed in any EVM-compatible mainnet. The assumptions are below:
  * 1.
  */
 
-contract TDrexPair is TDrexERC20, IERC1155Receiver {
+contract SaSiPair is SaSiERC20, IERC1155Receiver {
     using SafeMath for uint;
     using UQ112x112 for uint224;
 
@@ -35,7 +33,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
     error Pair_Insufficient_Liquidity(uint amount1, uint amount2);
     error Pair_Invalid_To();
     error Pair_NotExpired();
-    error Pair_TDrex_K();
+    error Pair_SaSi_K();
     error Pair_GovHasNotApprovedPool();
     error Pair_LengthMistach(uint length1, uint length2);
 
@@ -50,7 +48,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
             )
         );
 
-    ITDrexFactory public factory;
+    ISaSiFactory public factory;
     address public token0;
     address public token1;
     address rewardToken;
@@ -71,7 +69,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
 
     uint private unlocked = 1;
     modifier lock() {
-        require(unlocked == 1, "TDrex: LOCKED");
+        require(unlocked == 1, "SaSi: LOCKED");
         unlocked = 0;
         _;
         unlocked = 1;
@@ -97,7 +95,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
         );
         require(
             success && (data.length == 0 || abi.decode(data, (bool))),
-            "TDrex: ERC20_TRANSFER_FAILED"
+            "SaSi: ERC20_TRANSFER_FAILED"
         );
     }
 
@@ -113,7 +111,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
         );
         require(
             success && (data.length == 0 || abi.decode(data, (bool))),
-            "TDrex: ERC1155_TRANSFER_FAILED"
+            "SaSi: ERC1155_TRANSFER_FAILED"
         );
     }
 
@@ -136,7 +134,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
     event Sync(uint112 reserve0, uint112 reserve1);
 
     constructor() public {
-        factory = ITDrexFactory(msg.sender);
+        factory = ISaSiFactory(msg.sender);
     }
 
     // called once by the factory at time of deployment
@@ -189,7 +187,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
         uint112 _reserve0,
         uint112 _reserve1
     ) private returns (bool feeOn) {
-        address feeTo = ITDrexFactory(factory).feeTo();
+        address feeTo = ISaSiFactory(factory).feeTo();
         feeOn = feeTo != address(0);
         uint _kLast = kLast; // gas savings
         if (feeOn) {
@@ -230,7 +228,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
             );
         }
         if (liquidity == 0) revert Pair_Insufficient_Minted();
-        require(liquidity > 0, "TDrex: INSUFFICIENT_LIQUIDITY_MINTED");
+        require(liquidity > 0, "SaSi: INSUFFICIENT_LIQUIDITY_MINTED");
         _mint(to, liquidity);
 
         _update(balance0, balance1, _reserve0, _reserve1);
@@ -255,7 +253,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
         amount1 = liquidity.mul(balance1) / _totalSupply; // using balances ensures pro-rata distribution
         require(
             amount0 > 0 && amount1 > 0,
-            "TDrex: INSUFFICIENT_LIQUIDITY_BURNED"
+            "SaSi: INSUFFICIENT_LIQUIDITY_BURNED"
         );
         _burn(address(this), liquidity);
         _safeTransferERC20(_token0, to, amount0);
@@ -351,7 +349,7 @@ contract TDrexPair is TDrexERC20, IERC1155Receiver {
             if (
                 balance0Adjusted.mul(balance1Adjusted) <
                 uint(_reserve0).mul(_reserve1).mul(1000 ** 2)
-            ) revert Pair_TDrex_K();
+            ) revert Pair_SaSi_K();
         }
         _update(balance0, balance1, _reserve0, _reserve1);
         emit Swap(

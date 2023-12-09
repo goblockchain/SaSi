@@ -5,8 +5,8 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 contract mockERC1155Token is ERC1155("mockURI") {
     constructor() {
-        _mint(msg.sender, 12345, 10 ether, "0x");
-        _mint(address(101), 12345, 0.1 ether, "0x");
+        _mint(msg.sender, 1, 10 ether, "0x");
+        _mint(address(101), 1, 0.1 ether, "0x");
     }
 
     function mint(address _to, uint _id, uint _amount) external {
