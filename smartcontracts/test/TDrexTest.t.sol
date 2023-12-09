@@ -17,22 +17,32 @@ contract CounterTest is Test, IERC1155Receiver {
     TDrexRouter router;
     TDrexFactory public factory;
     NATIVE public native;
-    address randomUser = address(101);
+    address randomUser;
     mockERC1155Token token1;
     mockERC20Token token0;
     uint constant ID = 12345;
+    address govBr;
+    address entity;
 
     function setUp() public {
-        factory = new TDrexFactory(address(this), address(this));
+        govBr = makeAddr("govBr");
+        randomUser = makeAddr("randomUser");
+        entity = makeAddr("entity");
+        vm.startPrank(govBr);
+        factory = new TDrexFactory(govBr, govBr);
         token1 = new mockERC1155Token();
         token0 = new mockERC20Token();
         native = new NATIVE();
-        router = new TDrexRouter(
-            address(factory),
-            address(this),
-            address(native)
-        );
+        router = new TDrexRouter(address(factory), govBr, address(native));
+        router.addEntity(entity);
+        vm.stopPrank();
 
+        vm.startPrank(randomUser);
+        token1.mint(randomUser, 12345, 1 ether);
+        token1.mint(entity, 12345, 1 ether);
+        token0.mint(randomUser, 5 ether);
+        token0.mint(entity, 2 ether);
+        vm.stopPrank();
         vm.expectRevert();
         // below reverts because erc20 does not support ERC165.
         assertEq(ERC165Checker.supportsERC165(address(token0)), false);
@@ -45,23 +55,131 @@ contract CounterTest is Test, IERC1155Receiver {
         /*╔═════════════════════════════╗
           ║   MOCK PAIR USED IN TESTS   ║
           ╚═════════════════════════════╝*/
-
+        vm.startPrank(govBr);
         pair = TDrexPair(
             factory.createPair(
                 address(token0),
                 address(token1),
-                token0.balanceOf(address(this)),
-                token1.balanceOf(address(this), ID),
+                token0.balanceOf(govBr),
+                token1.balanceOf(govBr, ID),
                 ID
             )
         );
-        // address below is deterministic because of the CREATE2 opcode.
-        /*assertEq(
-            factory.getPair(address(token0), address(token1), ID),
-            address(0x96507cb9B4763D5E14A20F7C65A1cF948E115C92)
-        );
-        */
+        vm.stopPrank();
         assertEq(factory.allPairsLength(), 1);
+
+        vm.startPrank(entity);
+        token0.approve(address(router), 10 ether);
+        token1.setApprovalForAll(address(router), true);
+        router.addLiquidity(
+            address(token0),
+            address(token1),
+            12345,
+            2 ether,
+            1 ether,
+            0,
+            0,
+            entity,
+            block.timestamp + 1 days
+        );
+        vm.stopPrank();
+    }
+
+    function test_swap() public {
+        /**
+         * NOTE: So far, for the swap to work, the following has been done:
+         * 1. The factory has been deployed.
+         * 2. The tokens have been deployed.
+         * 3. The router has been deployed.
+         * 4. The pair has been created in the factory by the government.
+         * 5. Liquidity has been added to the pair through the router by an authorized entity -- function `addEntity` can be called by the government on router.
+         */
+
+        /// @dev the government will try to `swap` the tokens.
+        vm.startPrank(govBr);
+
+        // 0. approve router.
+        token1.setApprovalForAll(address(router), true);
+        token0.approve(address(router), 20 ether);
+        // 1. build path.
+        address[] memory path = new address[](2);
+        path[0] = address(token1); // erc1155
+        path[1] = address(token0); // erc20
+        uint amountIn = token1.balanceOf(govBr, 12345) / 5; //  2 ether
+
+        // FRONT-END simulation of swap:
+        // 0. Front-end may call the function `getPair` on factory.
+        address pairFromFactory = factory.getPair(
+            address(token0),
+            address(token1),
+            12345
+        );
+
+        // 1. Front-end may call the function `getAmountsOut` on router.
+        uint[] memory amounts = new uint[](2);
+        amounts = router.getAmountsOut(amountIn, 12345, path);
+
+        emit log_named_uint("amounts[0]", amounts[0]);
+        emit log_named_uint("amounts[1]", amounts[1]);
+        assert(amounts[1] == 1331997327989311957);
+
+        /// @dev swap
+        // below swapped 2 ether for 1331997327989311957
+        router.swapERC1155TokensForERC20Tokens(
+            amountIn,
+            0,
+            path,
+            12345,
+            govBr,
+            block.timestamp + 1 days
+        );
+
+        // 2. Front-end may call the function.
+
+        /// @dev a non-government will try to swap the tokens.
+        vm.stopPrank();
+        vm.startPrank(randomUser);
+
+        // 0. approve router.
+        token1.setApprovalForAll(address(router), true);
+        token0.approve(address(router), 20 ether);
+        // 1. build path.
+        path[0] = address(token0); // erc20
+        path[1] = address(token1); // erc1155
+
+        amountIn = token0.balanceOf(randomUser) / 10;
+
+        // FRONT-END simulation of swap:
+        // 0. Front-end may call the function `getPair` on factory.
+        pairFromFactory = factory.getPair(
+            address(token0),
+            address(token1),
+            12345
+        );
+
+        // 1. Front-end may call the function `getAmountsOut` on router.
+        amounts = router.getAmountsOut(amountIn, 12345, path);
+
+        emit log_named_uint("amounts[0]", amounts[0]);
+        emit log_named_uint("amounts[1]", amounts[1]);
+        assert(amounts[1] == 1282037354807102859);
+
+        router.swapERC20TokensForERC1155Tokens(
+            amountIn,
+            0,
+            path,
+            12345,
+            randomUser,
+            block.timestamp + 1 days
+        );
+
+        address pairFromLib = TDrexLibrary.pairFor(
+            address(factory),
+            address(token0),
+            address(token1),
+            12345
+        );
+        assert(address(pairFromLib) == address(pair));
     }
 
     function test_Factory() public {}
