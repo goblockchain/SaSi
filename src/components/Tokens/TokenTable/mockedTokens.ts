@@ -79,7 +79,7 @@ export const mocked_tokens = [
     },
     project: {
       id: 'VG9rZW5Qcm9qZWN0OkVUSEVSRVVNXzB4ODM5MGExZGEwN2UzNzZlZjdhZGQ0YmU4NTliYTc0ZmI4M2FhMDJkNV9Hcm9r',
-      logoUrl: 'https://i.im.ge/2023/11/27/CQmBj4.Group-11.png',
+      logoUrl: 'https://i.im.ge/2023/12/11/E5jUI4.tesouro-prefixado-2026.png',
       __typename: 'TokenProject',
       description:
         'The "Prefixed Treasury 2026" is an investment with maturity on 01/01/2026, yielding R$1,000 per security at maturity. It is ideal for medium-term investments without semi-annual interest, and can be redeemed in advance at market value.',
@@ -122,7 +122,7 @@ export const mocked_tokens = [
     },
     project: {
       id: 'VG9rZW5Qcm9qZWN0OkVUSEVSRVVNXzB4MjI2MGZhYzVlNTU0MmE3NzNhYTQ0ZmJjZmVkZjdjMTkzYmMyYzU5OV9XcmFwcGVkIEJpdGNvaW4=',
-      logoUrl: 'https://i.im.ge/2023/11/27/CQmGWC.Group-12.png',
+      logoUrl: 'https://i.im.ge/2023/12/11/E5j79M.tesour-selic-2026.png',
       __typename: 'TokenProject',
       description:
         "This title expires on 03/01/2029. Recommended for those who want to make medium-term investments Title with daily profitability linked to the economy's interest rate (Selic rate). This means that if the Selic rate increases, your profitability increases and if the Selic rate decreases, your profitability decreases. As it does not pay half-yearly interest, it is more interesting for those who can let their money earn until the investment matures.",
@@ -212,7 +212,7 @@ export const mocked_tokens = [
     },
     project: {
       id: 'VG9rZW5Qcm9qZWN0OkVUSEVSRVVNXzB4NTE0OTEwNzcxYWY5Y2E2NTZhZjg0MGRmZjgzZTgyNjRlY2Y5ODZjYV9DaGFpbmxpbms',
-      logoUrl: 'https://i.im.ge/2023/11/27/CQm4OD.Group-14.png',
+      logoUrl: 'https://i.im.ge/2023/12/11/E5jD8Y.tesouro-prefixado-2029.png',
       __typename: 'TokenProject',
       standard: 'ERC20',
       symbol: 'ETH',
@@ -257,7 +257,7 @@ export const mocked_tokens = [
     },
     project: {
       id: 'VG9rZW5Qcm9qZWN0OkVUSEVSRVVNXzB4OTZhZGQ0MTcyOTNhNDllODBmMDI0NzM0ZTk2Y2ZkOGIzNTViY2MxNF9MaXF1aWRMYXllcg==',
-      logoUrl: 'https://i.im.ge/2023/11/27/CQmJzY.Tesouro-Prefixado-2026.png',
+      logoUrl: 'https://i.im.ge/2023/12/11/E5jLQD.tesouro-selic-2029.png',
       __typename: 'TokenProject',
       description:
         "This title expires on 03/01/2029. Recommended for those who want to make medium-term investments Title with daily profitability linked to the economy's interest rate (Selic rate). This means that if the Selic rate increases, your profitability increases and if the Selic rate decreases, your profitability decreases. As it does not pay half-yearly interest, it is more interesting for those who can let their money earn until the investment matures.",

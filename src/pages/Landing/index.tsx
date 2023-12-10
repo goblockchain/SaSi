@@ -75,7 +75,7 @@ const Glow = styled.div`
   position: absolute;
   top: 68px;
   bottom: 0;
-  background: radial-gradient(72.04% 72.04% at 50% 3.99%, #37ffcd 0%, rgba(166, 151, 255, 0) 100%);
+  background: radial-gradient(72.04% 72.04% at 50% 3.99%, #a50000 0%, rgba(166, 151, 255, 0) 100%);
   filter: blur(72px);
   border-radius: 24px;
   max-width: 480px;
@@ -129,10 +129,10 @@ const TitleText = styled.h1<{ isDarkMode: boolean }>`
   ${({ isDarkMode }) =>
     isDarkMode
       ? css`
-          background: linear-gradient(20deg, rgba(255, 244, 207, 1) 10%, #57ff57 100%);
+          background: linear-gradient(20deg, #df0000ea 10%, #ffffff 100%);
         `
       : css`
-          background: linear-gradient(10deg, #0bb414 0%, #59fa0f 100%);
+          background: linear-gradient(10deg, #000000 0%, #fa0f0f 100%);
         `};
   background-clip: text;
   -webkit-background-clip: text;
@@ -174,13 +174,13 @@ const LandingButton = styled(BaseButton)`
 `
 
 const ButtonCTA = styled(LandingButton)`
-  background: linear-gradient(93.06deg, #2bd31c 2.66%, #9fffd7 98.99%);
+  background: linear-gradient(93.06deg, #000000 2.66%, #ce0000 98.99%);
   border: none;
   color: ${({ theme }) => theme.white};
   transition: ${({ theme }) => `all ${theme.transition.duration.medium} ${theme.transition.timing.ease}`};
 
   &:hover {
-    box-shadow: 0px 0px 16px 0px #2bd31c;
+    box-shadow: 0px 0px 16px 0px #c40000;
   }
 `
 
@@ -344,20 +344,13 @@ export default function Landing() {
             events={[BrowserEvent.onClick]}
             name={SharedEventName.ELEMENT_CLICKED}
             element={InterfaceElementName.LANDING_PAGE_SWAP_ELEMENT}
-          >
-            <img
-              style={{ borderRadius: '20px 20px' }}
-              src="https://github.com/goblockchain/t-drex-frontend/assets/90073210/e5ce8a9a-cedb-45bd-995f-657870bda1f2"
-            />
-          </TraceEvent>
+          ></TraceEvent>
         </LandingSwapContainer>
-        <Gradient isDarkMode={isDarkMode} />
-        <GlowContainer>
-          <Glow />
-        </GlowContainer>
+
         <ContentContainer isDarkMode={isDarkMode}>
+          <img style={{ borderRadius: '20px 20px' }} src="https://i.im.ge/2023/12/11/E5FPAq.109847471.png" />
           <TitleText isDarkMode={isDarkMode}>
-            {shouldDisableNFTRoutes ? <Trans>Trade crypto with confidence</Trans> : <Trans>T-DREX</Trans>}
+            {shouldDisableNFTRoutes ? <Trans>Trade crypto with confidence</Trans> : <Trans>SaSi</Trans>}
           </TitleText>
           <SubTextContainer>
             <SubText>
@@ -365,8 +358,8 @@ export default function Landing() {
                 <Trans>Buy, sell, and explore assets</Trans>
               ) : (
                 <Trans>
-                  Resolvemos o problema de liquidez e flexibilidade dos títulos públicos federais, permitindo o acesso
-                  de empresas de qualquer lugar do mundo e de outros países.
+                  We solve the problem of liquidity and flexibility of federal public securities, allowing access by
+                  companies from anywhere in the world and from other countries.
                 </Trans>
               )}
             </SubText>
@@ -380,7 +373,7 @@ export default function Landing() {
               <a href="https://tdrex.vercel.app/" target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer">
                 <ButtonCTA>
                   <ButtonCTAText>
-                    <Trans>Comece agora</Trans>
+                    <Trans>Start now</Trans>
                   </ButtonCTAText>
                 </ButtonCTA>
               </a>
@@ -391,7 +384,7 @@ export default function Landing() {
               cardsRef?.current?.scrollIntoView({ behavior: 'smooth' })
             }}
           >
-            <Trans>Saiba mais</Trans>
+            <Trans>know more</Trans>
           </LearnMoreContainer>
         </ContentContainer>
         <AboutContentContainer isDarkMode={isDarkMode}>

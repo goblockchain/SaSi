@@ -25,7 +25,7 @@ const Banner = styled.div<{ isDarkMode: boolean }>`
   background: ${({ isDarkMode }) =>
     isDarkMode
       ? `url(${meshSrc}), ${DARK_MODE_GRADIENT}`
-      : `url(${meshSrc}), linear-gradient(93.06deg, #2BD31C 2.66%, #9fffd7 98.99%);`};
+      : `url(${meshSrc}), linear-gradient(93.06deg, #080808 2.66%, #ff9f9f 98.99%);`};
 
   @media screen and (min-width: ${BREAKPOINTS.lg}px) {
     height: 140px;
@@ -89,9 +89,9 @@ const ProtocolBanner = () => {
   return (
     <Banner isDarkMode={isDarkMode}>
       <TextContainer>
-        <HeaderText>Powered by T-DREX Protocol</HeaderText>
+        <HeaderText>Powered by SaSi Protocol</HeaderText>
         <DescriptionText>
-          O principal protocolo descentralizado de negociação de criptografia, governado por uma comunidade global..
+          The leading decentralized crypto trading protocol, governed by a global community.
         </DescriptionText>
       </TextContainer>
       <BannerButtonContainer></BannerButtonContainer>

@@ -32,7 +32,7 @@ export const colors = {
   pink700: '#55072A',
   pink800: '#350318',
   pink900: '#2B000B',
-  pinkVibrant: '#F51A70',
+  pinkVibrant: 'F51A70#',
   red50: '#FAECEA',
   red100: '#FED5CF',
   red200: '#FEA79B',
