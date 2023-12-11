@@ -29,7 +29,7 @@ contract SaSiRouter {
 
     address public immutable factory;
     address public immutable govBr;
-    address public immutable WNative;
+    address private immutable WNative;
     mapping(address => bool) entities;
 
     /*╔═════════════════════════════╗
@@ -354,70 +354,6 @@ contract SaSiRouter {
 
     // **** REMOVE LIQUIDITY (supporting fee-on-transfer tokens) ****
     //** In the real world, such tokens that support fee on transfer are: SafeMoon, FlokiInu, BabyDoge, Crypter */
-
-    function removeLiquidityNativeSupportingFeeOnTransferTokens(
-        address token,
-        uint id,
-        uint liquidity,
-        uint amountTokenMin,
-        uint amountNativeMin,
-        address to,
-        uint deadline
-    ) public virtual returns (uint amountNative) {
-        ensure(deadline);
-        (, amountNative) = removeLiquidity(
-            token,
-            WNative,
-            id,
-            liquidity,
-            amountTokenMin,
-            amountNativeMin,
-            address(this),
-            deadline
-        );
-        TransferHelper.safeTransfer(
-            token,
-            to,
-            IERC20(token).balanceOf(address(this))
-        );
-        INative(WNative).withdraw(amountNative);
-        TransferHelper.safeTransferNative(to, amountNative);
-    }
-
-    function removeLiquidityNativeWithPermitSupportingFeeOnTransferTokens(
-        address token,
-        uint liquidity,
-        uint id,
-        uint amountTokenMin,
-        uint amountNativeMin,
-        address to,
-        uint deadline,
-        bool approveMax,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external virtual returns (uint amountNative) {
-        address pair = SaSiLibrary.pairFor(factory, token, WNative, id);
-        uint value = approveMax ? type(uint).max : liquidity;
-        ISaSiPair(pair).permit(
-            msg.sender,
-            address(this),
-            value,
-            deadline,
-            v,
-            r,
-            s
-        );
-        amountNative = removeLiquidityNativeSupportingFeeOnTransferTokens(
-            token,
-            liquidity,
-            id,
-            amountTokenMin,
-            amountNativeMin,
-            to,
-            deadline
-        );
-    }
 
     /*╔═════════════════════════════╗
       ║            SWAPS            ║
