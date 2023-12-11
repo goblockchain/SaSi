@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/goblockchain/sasi/assets/90073210/2d9f9912-0305-45da-8885-2897e67b80cc" />
+  <img src="https://github.com/goblockchain/sasi/assets/90073210/d4cd48f2-a825-4439-a464-946ddcb59b36" />
 </div>
 
 # SaSi Protocol 
