@@ -22,14 +22,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 - Solidity - Smart Contracts Language
 
 ## Smart contract on XRPL EVM Sidechain
-- [TDCOL]	0xd272bd4b01108b31d1a77e0f5a047f70395289cf	
-- [TDHK]	0x82561c611e126407d1476815c6c6b5a8f54e746e	
-- [TDJP]	0x38dc8b63703e5ba1196c07340ed1aca0f793f066	
-- [TDUR]	0x342d539dd2d0a33bb68ba990e39ca9f6daa54c5b	
-- [TP26]	0xbe95469b559ebf8e37fdcbe09c289068d9ca7636 	TOKEN ID - 1
-- [TS26]	0xbe95469b559ebf8e37fdcbe09c289068d9ca7636	TOKEN ID - 2
-- [TP29]	0xbe95469b559ebf8e37fdcbe09c289068d9ca7636	TOKEN ID - 3
-- [TS29]	0xbe95469b559ebf8e37fdcbe09c289068d9ca7636	TOKEN ID - 4
+|Contract | Address | Network|
+--- | --- | ---|
+|SaSiFactory|0xC6FCCF8Aaa53Ec976483a23388aea068BD7eBcAb|XRPL EVM Sidechain|
+|SaSiRouter|0xB2F3994FD5B2CCf1Dc63FC05E01B06d376170F3f|XRPL EVM Sidechain|
+|SaSiPair (CDBC/Bond)|0x9bfaadc96d3f0ac268716fc9fe5489a5348e47e4|XRPL EVM Sidechain|
+|CDBC|0x8fF97eCEaf1d5e455e7C3C2dB16e5eF90FfE265c|XRPL EVM Sidechain|
+|Bond|0x2136F6805Ec91231eb0527884adE475cb9C50c37|XRPL EVM Sidechain|
+|SaSiRouter|0xB2F3994FD5B2CCf1Dc63FC05E01B06d376170F3f|XRPL EVM Sidechain|
 
 ## Web Application 
 [link](https://sasi-home.vercel.app/)
@@ -44,3 +44,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 Use this article to import the wallet: [Importing using a private key](https://support.metamask.io/hc/en-us/articles/360015489331-How-to-import-an-account#h_01G01W07NV7Q94M7P1EBD5BYM4)
 You can import the wallet using the privateKey: 650e2b67cff4d18d3caa5021bd995247ee86af3bcfad741d724501b7ce68efcc
+
+### Connect to your wallet, and perform a swap
+
+Now you're all set! You just need to connect to your wallet on the [Swap page](https://sasi-swap.vercel.app/), select the desired pair, and Swap!
+
+[sasi-swap.webm](https://github.com/goblockchain/sasi/assets/94938605/4c02cc57-a779-467f-a8d5-a761b0dffe57)
+
+## SaSi Protocol Smart Contracts
+
+Learn how the Sasi protocol smart contracts works, on [SaSi Contracts README](https://github.com/goblockchain/sasi/blob/main/smartcontracts/README.md)
