@@ -41,7 +41,7 @@ export default function AndroidAnnouncementBanner() {
   if (!isAndroidGALaunched || isMobileSafari) return null
 
   return (
-    <PopupContainer show={shouldDisplay}>
+    <PopupContainer show={false}>
       <Container>
         <Thumbnail src={isDarkMode ? darkAndroidThumbnail : lightAndroidThumbnail} alt="Android app thumbnail" />
         <TextContainer onClick={!screenSize['xs'] ? onClick : undefined}>

@@ -348,9 +348,9 @@ export default function Landing() {
         </LandingSwapContainer>
 
         <ContentContainer isDarkMode={isDarkMode}>
-          <img style={{ borderRadius: '20px 20px' }} src="/images/logos/main-logo-v2.png" />
+          <img style={{ borderRadius: '20px 20px', marginBottom: 35 }} src="/images/logos/main-logo-v2.png" />
           <TitleText isDarkMode={isDarkMode}>
-            {shouldDisableNFTRoutes ? <Trans>Trade crypto with confidence</Trans> : <Trans>SaSi</Trans>}
+            {shouldDisableNFTRoutes ? <Trans>Trade crypto with confidence</Trans> : <Trans>SaSi Protocol</Trans>}
           </TitleText>
           <SubTextContainer>
             <SubText>
