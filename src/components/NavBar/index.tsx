@@ -89,6 +89,9 @@ export const PageTabs = () => {
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
           <Trans>Pools</Trans>
         </MenuItem>
+        <MenuItem href="/participants" dataTestId="pool-nav-link" isActive={pathname.startsWith('/participants')}>
+          <Trans>Participants</Trans>
+        </MenuItem>
       </Box>
       {/* <Box marginY="4">
         <MenuDropdown />

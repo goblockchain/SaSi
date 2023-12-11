@@ -387,13 +387,13 @@ export default function Pool() {
         <AutoColumn gap="lg" justify="center">
           <AutoColumn gap="lg" style={{ width: '100%' }}>
             <MainContainerTitleWrapper>
-              <h2>Pools de liquidez</h2>
+              <h2>Liquidity Pools</h2>
               <PoolsTypesSelect>
                 <button
                   onClick={() => handleFilterPoolByType('all')}
                   className={`${activePoolType === 'all' && 'selected'}`}
                 >
-                  Ver todos
+                  View all
                 </button>
                 <button
                   onClick={() => handleFilterPoolByType('ltn')}
