@@ -64,7 +64,7 @@ export const PageTabs = () => {
   return (
     <>
       <a
-        href="https://tdrex.vercel.app/"
+        href="https://sasi-swap.vercel.app/"
         target="_blank"
         style={{ textDecoration: 'none', color: '#7D7D7D' }}
         rel="noreferrer"

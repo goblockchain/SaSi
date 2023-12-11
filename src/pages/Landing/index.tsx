@@ -358,8 +358,8 @@ export default function Landing() {
                 <Trans>Buy, sell, and explore assets</Trans>
               ) : (
                 <Trans>
-                  We solve the problem of liquidity and flexibility of federal public securities, allowing access by
-                  companies from anywhere in the world and from other countries.
+                  We solve the problem of liquidity and flexibility for acquiring federal public securities, allowing
+                  access for institutions from anywhere in the world.
                 </Trans>
               )}
             </SubText>
