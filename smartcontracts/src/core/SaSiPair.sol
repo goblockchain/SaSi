@@ -37,7 +37,6 @@ contract SaSiPair is SaSiERC20, IERC1155Receiver {
     error Pair_LengthMistach(uint length1, uint length2);
 
     uint public constant MINIMUM_LIQUIDITY = 10 ** 3;
-    // TODO: check whether the function's sig to be called for ERC1155 transfer is this one.
     bytes4 private constant ERC20_SELECTOR =
         bytes4(keccak256(bytes("transfer(address,uint256)")));
     bytes4 private constant ERC1155_SELECTOR =
@@ -216,7 +215,6 @@ contract SaSiPair is SaSiERC20, IERC1155Receiver {
         bool feeOn = _mintFee(_reserve0, _reserve1);
         uint _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in _mintFee
         if (_totalSupply == 0) {
-            // TODO: This may not be needed. Locking the first tokens for the zero address, why?
             // Answer: https://ethereum.stackexchange.com/questions/132491/why-minimum-liquidity-is-used-in-dex-like-uniswap
             liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
             _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
@@ -279,13 +277,11 @@ contract SaSiPair is SaSiERC20, IERC1155Receiver {
             revert Pair_GovHasNotApprovedPool();
         IERC20(token).transferFrom(msg.sender, address(this), rewards);
         // should we really burn the initialPrice1 ?
-        // TODO: define from whom we'll burn here.
         IERC1155Burnable(token1).burn(msg.sender, ID, initialPrice1);
         // distribute to holders, which are only the banks
         setDistribute(true, token);
     }
 
-    // TODO: test this well and well!
     // holders are checked off-chain
     function distributeRewards(
         address[] memory holders,
@@ -342,7 +338,6 @@ contract SaSiPair is SaSiERC20, IERC1155Receiver {
         if (amount0In == 0 && amount1In == 0) revert Pair_Insufficient_Input();
         {
             // scope for reserve{0,1} Adjusted, avoids stack too deep errors
-            // TODO: parametrize fee.
             uint balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(3));
             uint balance1Adjusted = balance1.mul(1000).sub(amount1In.mul(3));
             if (
