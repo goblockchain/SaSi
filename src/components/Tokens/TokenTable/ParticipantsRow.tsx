@@ -7,7 +7,7 @@ import { useInfoExplorePageEnabled } from 'featureFlags/flags/infoExplore'
 import { SparklineMap, TopToken } from 'graphql/data/TopTokens'
 import { supportedChainIdFromGQLChain, validateUrlChainParam } from 'graphql/data/util'
 import { useAtomValue } from 'jotai/utils'
-import { ForwardedRef, forwardRef, CSSProperties, ReactNode } from 'react'
+import { CSSProperties, ForwardedRef, forwardRef, ReactNode } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { BREAKPOINTS } from 'theme'
@@ -288,7 +288,7 @@ export const HEADER_DESCRIPTIONS: Record<ParticipantsSortMethod, ReactNode | und
   [ParticipantsSortMethod.PERCENT_CHANGE]: undefined,
   [ParticipantsSortMethod.TOTAL_VALUE_LOCKED]: (
     <Trans>
-      Total value locked (TVL) is the aggregate amount of the asset available across all T-DREX liquidity pools.
+      Total value locked (TVL) is the aggregate amount of the asset available across all SaSi liquidity pools.
     </Trans>
   ),
   [ParticipantsSortMethod.FULLY_DILUTED_VALUATION]: (
@@ -298,7 +298,7 @@ export const HEADER_DESCRIPTIONS: Record<ParticipantsSortMethod, ReactNode | und
     </Trans>
   ),
   [ParticipantsSortMethod.VOLUME]: (
-    <Trans>Volume is the amount of the asset that has been traded on T-DREX during the selected time frame.</Trans>
+    <Trans>Volume is the amount of the asset that has been traded on SaSi during the selected time frame.</Trans>
   ),
 }
 

@@ -143,7 +143,7 @@ export default function StatsSection(props: StatsSectionProps) {
                   value={volume24H}
                   description={
                     <Trans>
-                      1 day volume is the amount of the asset that has been traded on T-DREX during the past 24 hours.
+                      1 day volume is the amount of the asset that has been traded on SaSi during the past 24 hours.
                     </Trans>
                   }
                   title={<Trans>1 day volume</Trans>}
@@ -164,7 +164,7 @@ export default function StatsSection(props: StatsSectionProps) {
                   value={volume24H}
                   description={
                     <Trans>
-                      24H volume is the amount of the asset that has been traded on T-DREX during the past 24 hours.
+                      24H volume is the amount of the asset that has been traded on SaSi during the past 24 hours.
                     </Trans>
                   }
                   title={<Trans>24H volume</Trans>}

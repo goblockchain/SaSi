@@ -5,7 +5,6 @@ import { Trace } from 'analytics'
 import { AutoRow } from 'components/Row'
 import { MAX_WIDTH_MEDIA_BREAKPOINT, MEDIUM_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
 import { filterStringAtom } from 'components/Tokens/state'
-import NetworkFilter from 'components/Tokens/TokenTable/NetworkFilter'
 import SearchBar from 'components/Tokens/TokenTable/SearchBar'
 import TimeSelector from 'components/Tokens/TokenTable/TimeSelector'
 import TokenTable from 'components/Tokens/TokenTable/TokenTable'
@@ -218,7 +217,7 @@ const Explore = ({ initialTab }: { initialTab?: ExploreTab }) => {
           {isInfoExplorePageEnabled ? (
             <FiltersContainer isInfoExplorePageEnabled>
               <DropdownFilterContainer isInfoExplorePageEnabled>
-                <NetworkFilter />
+                {/* <NetworkFilter /> */}
                 {currentKey === ExploreTab.Tokens && <TimeSelector />}
               </DropdownFilterContainer>
               <SearchContainer isInfoExplorePageEnabled>
@@ -227,10 +226,10 @@ const Explore = ({ initialTab }: { initialTab?: ExploreTab }) => {
             </FiltersContainer>
           ) : (
             <>
-              <FiltersContainer isInfoExplorePageEnabled={false}>
+              {/* <FiltersContainer isInfoExplorePageEnabled={false}>
                 <NetworkFilter />
                 <TimeSelector />
-              </FiltersContainer>
+              </FiltersContainer> */}
               {/* <SearchContainer isInfoExplorePageEnabled={false}>
                 <SearchBar />
               </SearchContainer> */}

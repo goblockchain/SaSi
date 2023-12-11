@@ -301,7 +301,7 @@ export const HEADER_DESCRIPTIONS: Record<TokenSortMethod, ReactNode | undefined>
   [TokenSortMethod.PERCENT_CHANGE]: undefined,
   [TokenSortMethod.TOTAL_VALUE_LOCKED]: (
     <Trans>
-      Total value locked (TVL) is the aggregate amount of the asset available across all T-DREX liquidity pools.
+      Total value locked (TVL) is the aggregate amount of the asset available across all SaSi liquidity pools.
     </Trans>
   ),
   [TokenSortMethod.FULLY_DILUTED_VALUATION]: (
@@ -311,7 +311,7 @@ export const HEADER_DESCRIPTIONS: Record<TokenSortMethod, ReactNode | undefined>
     </Trans>
   ),
   [TokenSortMethod.VOLUME]: (
-    <Trans>Volume is the amount of the asset that has been traded on T-DREX during the selected time frame.</Trans>
+    <Trans>Volume is the amount of the asset that has been traded on SaSi during the selected time frame.</Trans>
   ),
 }
 
