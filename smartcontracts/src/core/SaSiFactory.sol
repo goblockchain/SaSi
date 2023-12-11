@@ -44,7 +44,6 @@ contract SaSiFactory is ISaSiFactory {
         uint
     );
 
-    // TODO: what's this fee for? Look at RareSkills
     constructor(address _feeToSetter, address _govBR) {
         feeToSetter = _feeToSetter;
         govBr = _govBR;
