@@ -19,7 +19,6 @@ import { useIsNavSearchInputVisible } from '../../nft/hooks/useIsNavSearchInputV
 import { Bag } from './Bag'
 import Blur from './Blur'
 import { ChainSelector } from './ChainSelector'
-import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
 
 const Nav = styled.nav`
@@ -90,6 +89,9 @@ export const PageTabs = () => {
         <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
           <Trans>Pools</Trans>
         </MenuItem>
+        <MenuItem href="/participants" dataTestId="pool-nav-link" isActive={pathname.startsWith('/participants')}>
+          <Trans>Participants</Trans>
+        </MenuItem>
       </Box>
       {/* <Box marginY="4">
         <MenuDropdown />
@@ -140,12 +142,12 @@ const Navbar = ({ blur }: { blur: boolean }) => {
               display: 'flex',
             })}
           >
-            <SearchBar />
+            {/* <SearchBar /> */}
           </Box>
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
               <Box position="relative" display={isNavSearchInputVisible ? 'none' : { sm: 'flex' }}>
-                <SearchBar />
+                {/* <SearchBar /> */}
               </Box>
               {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
               {!isNftPage && (

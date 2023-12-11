@@ -26,7 +26,6 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import store from './state'
 import ApplicationUpdater from './state/application/updater'
 import ListsUpdater from './state/lists/updater'
-import LogsUpdater from './state/logs/updater'
 import OrderUpdater from './state/signatures/updater'
 import TransactionUpdater from './state/transactions/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
@@ -52,7 +51,7 @@ function Updaters() {
       <TransactionUpdater />
       <OrderUpdater />
       <MulticallUpdater />
-      <LogsUpdater />
+      {/* <LogsUpdater /> */}
     </>
   )
 }

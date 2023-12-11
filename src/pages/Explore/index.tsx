@@ -187,7 +187,7 @@ const Explore = ({ initialTab }: { initialTab?: ExploreTab }) => {
               placement="bottom"
             >
               <ThemedText.LargeHeader>
-                <Trans>Top tokens on T-DREX</Trans>
+                <Trans>Top tokens on SaSi</Trans>
               </ThemedText.LargeHeader>
             </MouseoverTooltip>
           </TitleContainer>
@@ -231,9 +231,9 @@ const Explore = ({ initialTab }: { initialTab?: ExploreTab }) => {
                 <NetworkFilter />
                 <TimeSelector />
               </FiltersContainer>
-              <SearchContainer isInfoExplorePageEnabled={false}>
+              {/* <SearchContainer isInfoExplorePageEnabled={false}>
                 <SearchBar />
-              </SearchContainer>
+              </SearchContainer> */}
             </>
           )}
         </NavWrapper>

@@ -52,12 +52,12 @@ export function AboutSection({ address, chainId, description, homepageUrl, twitt
   return (
     <AboutContainer data-testid="token-details-about-section">
       <AboutHeader>
-        <Trans>Sobre</Trans>
+        <Trans>About</Trans>
       </AboutHeader>
       <TokenDescriptionContainer>
         {!description && (
           <NoInfoAvailable>
-            <Trans>Informações do token não estão disponíveis</Trans>
+            <Trans>Token information is not available</Trans>
           </NoInfoAvailable>
         )}
         {tokenDescription}

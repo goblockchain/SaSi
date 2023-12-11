@@ -12,6 +12,7 @@ const SqueezedPoolPairs = ({ firstPair, secondPair }: { firstPair: string; secon
     },
     {
       img: secondPair,
+      size: '45px',
     },
   ]
 
@@ -76,8 +77,8 @@ const PoolCardHeader = styled.header`
     align-items: center;
     column-gap: 10px;
     .main-icon {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
     }
 
     h3 {
@@ -154,6 +155,7 @@ const PoolCardFooter = styled.div`
     border-radius: 8px;
     width: 100%;
     padding: 10px;
+    cursor: 'pointer';
   }
 `
 
@@ -194,6 +196,7 @@ export default function PoolCards({ activePoolType }: { activePoolType: PoolsTyp
           </PoolCardBody>
           <PoolCardFooter>
             <p>{pool.public_title_infos.description}</p>
+            <button>View more</button>
           </PoolCardFooter>
         </StyledPoolCard>
       ))}

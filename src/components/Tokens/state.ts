@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { TimePeriod } from 'graphql/data/util'
 import { atom, useAtom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
@@ -8,6 +9,14 @@ export enum TokenSortMethod {
   PRICE = 'Price',
   PERCENT_CHANGE = 'Change',
   TOTAL_VALUE_LOCKED = 'TVL',
+  VOLUME = 'Volume',
+}
+
+export enum ParticipantsSortMethod {
+  FULLY_DILUTED_VALUATION = 'FDV',
+  PRICE = 'Profile',
+  PERCENT_CHANGE = 'Country',
+  TOTAL_VALUE_LOCKED = 'Currency',
   VOLUME = 'Volume',
 }
 
