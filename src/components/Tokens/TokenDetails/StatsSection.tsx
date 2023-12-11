@@ -108,7 +108,7 @@ export default function StatsSection(props: StatsSectionProps) {
     return (
       <StatsWrapper data-testid="token-details-stats">
         <Header>
-          <Trans>Estatísticas</Trans>
+          <Trans>Statistics</Trans>
         </Header>
         <TokenStatsSection>
           {isInfoTDPEnabled ? (

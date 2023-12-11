@@ -205,7 +205,7 @@ const pools_mock = [
       id: 1,
       name: 'SELIC 2026 TREASURY',
       type: 'ltf',
-      icon: 'https://i.im.ge/2023/11/27/CQmGWC.Group-12.png',
+      icon: 'https://i.im.ge/2023/12/11/E5j79M.tesour-selic-2026.png',
       description:
         "Investment due on 03/01/2026. Recommended for those who want to make medium-term investments Title with daily profitability linked to the economy's interest rate (Selic rate).",
     },
