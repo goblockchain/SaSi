@@ -39,7 +39,7 @@ export function SwitchLocaleLink() {
   return (
     <Container>
       <Trans>
-        T-DREX available in:{' '}
+        SaSi available in:{' '}
         <StyledInternalLink onClick={onClick} to={to}>
           {LOCALE_LABEL[targetLocale]}
         </StyledInternalLink>

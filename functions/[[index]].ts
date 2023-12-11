@@ -7,7 +7,7 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
     title: 'SaSi Interface',
     image: imageUri,
     url: request.url,
-    description: 'Swap or provide liquidity on the T-DREX Protocol',
+    description: 'Swap or provide liquidity on the SaSi Protocol',
   }
   const res = next()
   try {
