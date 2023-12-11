@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="https://github.com/goblockchain/t-drex-frontend/assets/90073210/e5ce8a9a-cedb-45bd-995f-657870bda1f2" />
+  <img src="https://github.com/goblockchain/sasi/assets/90073210/290c8a2a-3882-4edd-93c5-cd74d7f0584a" />
 </div>
 
-# T-Drex Protocol 
+# SaSi Protocol 
  - Our mission is to enable financial infrastructure to have more efficiency, security and liquidity <br />
- - T-Drex product solve the problem of liquidity and flexibility of federal public securities, allowing access by companies from anywhere in the world and other countries.
+ - SaSi product solve the problem of liquidity and flexibility of federal public securities, allowing access by companies from anywhere in the world
 
  # Our Pitch Deck
  - [Click here to access](https://www.canva.com/design/DAF01t5gs3Y/aMABoKWOiMVfthMVLiAP9A/view?utm_content=DAF01t5gs3Y&utm_campaign=designshare&utm_medium=link&utm_source=editor)
