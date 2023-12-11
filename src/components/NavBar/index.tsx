@@ -125,7 +125,7 @@ const Navbar = ({ blur }: { blur: boolean }) => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer} onClick={handleDinoIconClick}>
-              <img src="/images/logos/main_logo.png" width={48} />
+              <img src="/images/logos/main-logo-v2.png" width={48} />
             </Box>
             {!isNftPage && (
               <Box display={{ sm: 'flex', lg: 'none' }}>

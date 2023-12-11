@@ -348,7 +348,7 @@ export default function Landing() {
         </LandingSwapContainer>
 
         <ContentContainer isDarkMode={isDarkMode}>
-          <img style={{ borderRadius: '20px 20px' }} src="https://i.im.ge/2023/12/11/E5FPAq.109847471.png" />
+          <img style={{ borderRadius: '20px 20px' }} src="/images/logos/main-logo-v2.png" />
           <TitleText isDarkMode={isDarkMode}>
             {shouldDisableNFTRoutes ? <Trans>Trade crypto with confidence</Trans> : <Trans>SaSi</Trans>}
           </TitleText>
@@ -370,7 +370,12 @@ export default function Landing() {
               name={SharedEventName.ELEMENT_CLICKED}
               element={InterfaceElementName.CONTINUE_BUTTON}
             >
-              <a href="https://tdrex.vercel.app/" target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer">
+              <a
+                href="https://sasi-swap.vercel.app/"
+                target="_blank"
+                style={{ textDecoration: 'none' }}
+                rel="noreferrer"
+              >
                 <ButtonCTA>
                   <ButtonCTAText>
                     <Trans>Start now</Trans>
@@ -384,7 +389,14 @@ export default function Landing() {
               cardsRef?.current?.scrollIntoView({ behavior: 'smooth' })
             }}
           >
-            <Trans>know more</Trans>
+            <a
+              target="_blank"
+              style={{ textDecoration: 'none', color: 'GrayText' }}
+              href="https://github.com/goblockchain/sasi"
+              rel="noreferrer"
+            >
+              <Trans>know more</Trans>
+            </a>
           </LearnMoreContainer>
         </ContentContainer>
         <AboutContentContainer isDarkMode={isDarkMode}>

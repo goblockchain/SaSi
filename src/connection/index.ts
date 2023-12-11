@@ -147,7 +147,7 @@ export const uniwalletWCV2ConnectConnection: Connection = {
   connector: web3WCV2UniwalletConnect,
   hooks: web3WCV2UniwalletConnectHooks,
   type: ConnectionType.UNISWAP_WALLET_V2,
-  getIcon: () => '/images/logos/main_logo.png',
+  getIcon: () => '/images/logos/main-logo-v2.png',
   shouldDisplay: (isAndroidGALaunched) =>
     Boolean(!getIsInjectedMobileBrowser() && (isAndroidGALaunched ? !isNonSupportedPhone : !isNonIOSPhone)),
 }
