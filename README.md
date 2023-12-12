@@ -13,7 +13,7 @@ For steps on local deployment, development, and code contribution, please see [C
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
 
 ### Built With
-- Polygon 
+- Ripple
 - Uniswap v3 - DeFi Infrastructure
 - React - Frontend Framework
 - Solidity - Smart Contracts Language
