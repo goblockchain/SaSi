@@ -327,12 +327,12 @@ function TokenRow({
   header: boolean
   listNumber: ReactNode
   $loading?: boolean
-  tvl: ReactNode
+  tvl?: ReactNode
   price: ReactNode
   percentChange: ReactNode
   sparkLine?: ReactNode
   tokenInfo: ReactNode
-  volume: ReactNode
+  volume?: ReactNode
   last?: boolean
   style?: CSSProperties
 }) {
@@ -464,12 +464,8 @@ export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HT
               </PriceInfoCell>
             </ClickableContent>
           }
-          percentChange={
-            <ClickableContent gap={3}>
-              <CircleLogoImage size="36px" src={token.countryImg} />
-            </ClickableContent>
-          }
-          tvl={<ClickableContent>{token.localCurrency}</ClickableContent>}
+          percentChange={<ClickableContent gap={3}>-----</ClickableContent>}
+          tvl={<ClickableContent>-----</ClickableContent>}
           volume={
             <ClickableContent>
               {formatNumber({
